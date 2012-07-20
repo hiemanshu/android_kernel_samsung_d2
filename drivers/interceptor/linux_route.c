@@ -100,8 +100,8 @@ interceptor_route_create_child_dst(struct dst_entry *dst, Boolean ipv6)
   if (dst_get_neighbour(dst) != NULL)
     dst_set_neighbour(child, neigh_clone(dst_get_neighbour(dst)));
 #else  /* LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS */
-  if (dst->neighbour != NULL)
-    child->neighbour = neigh_clone(dst->neighbour);
+  if (dst->_neighbour != NULL)
+    child->_neighbour = neigh_clone(dst->_neighbour);
 #endif /* LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS */
 
   if (dst->dev)
@@ -667,11 +667,11 @@ ssh_interceptor_route_output_ipv6(SshInterceptor interceptor,
   /* For an example of retrieving routing information for IPv6
      within Linux kernel (2.4.19) see inet6_rtm_getroute()
      in /usr/src/linux/net/ipv6/route.c */
-#ifdef LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS
+//#ifdef LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS
   neigh = dst_get_neighbour(&rt->dst);
-#else  /* LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS */
-  neigh = rt->rt6i_nexthop;
-#endif /* LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS */
+//#else  /* LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS */
+//  neigh = rt->rt6i_nexthop;
+//#endif /* LINUX_HAS_DST_NEIGHBOUR_FUNCTIONS */
 
   if (neigh != NULL)
     SSH_IP6_DECODE(result->gw, &neigh->primary_key);
